@@ -1,7 +1,12 @@
 import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
+import { useContext } from 'react';
+import {GlobalContext} from "../contexts/GlobalContext";
+
 const Article = ({data,isActive}) => {
     const { feedname } = useParams();
+    let {separateDate} = useContext(GlobalContext);
+
     return (
         <StyledArticle className="article">
 		    <Link to={`/${feedname}/${encodeURIComponent(data.title)}`} className={isActive?"list-el active":"list-el"}>
@@ -13,7 +18,11 @@ const Article = ({data,isActive}) => {
                     <div className="article-summery">{data.summary}</div>
 		    	</div>
 		    	<div>
-		    		<div className="article-date">{"12pm"}</div>
+		    		<div className="article-date">{
+                        separateDate(data.publishedDate)[3]+(
+                            parseInt(separateDate(data.publishedDate)[3])>13?"pm":"am"
+                        )
+                    }</div>
 		    		<div className="favourite">
 		    			<span className="material-symbols-outlined">star</span>
 		    		</div>

@@ -8,18 +8,14 @@ import {GlobalContext} from "../contexts/GlobalContext";
 
 const ArticlesList = ({feeds,articles}) => {
     const { feedname,articlename } = useParams();
-    let {searchQuery,filteredArticles} = useContext(GlobalContext);
+    let {filteredArticles,separateDate} = useContext(GlobalContext);
     const feed = feeds.find(feed => feed.feedName === feedname);
-    if(searchQuery===""){
-        if(!feedname){
-            filteredArticles = articles.filter((article) => article.feedName === feeds[0]?.feedName);
-        }
-        else{
-            filteredArticles = articles.filter((article) => article.feedName === feed?.feedName);
-        }
 
-    }else{
-        filteredArticles = articles.filter(article=>article.title.toLowerCase().includes(searchQuery.toLowerCase()));
+    if(!feedname){
+        filteredArticles = articles.filter((article) => article.feedName === feeds[0]?.feedName);
+    }
+    else{
+        filteredArticles = articles.filter((article) => article.feedName === feed?.feedName);
     }
 
     return (
@@ -116,5 +112,14 @@ justify-content: flex-start;
 }
 .article-list .list>div{
     border-bottom: 2px solid var(--secondary-lightest) ;
+}
+@media screen and (max-width:1000px) {
+    height: 200px;
+    .article-list{
+        margin-bottom: 1px;
+        margin-left:80px;
+        width: 100%;
+
+    }
 }
 `

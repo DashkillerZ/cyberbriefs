@@ -3,12 +3,18 @@ import logo from "../static/logo.png";
 import logoName from "../static/logoName.png";
 import Feed from "./Feed";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 const FeedsList = ({feeds,articles}) => {
     const{feedname}=useParams()
     let [menuBtn,setMenuBtn] = useState(true);
-  
+    useEffect(()=>{
+        window.addEventListener("resize",()=>{
+            if(window.innerWidth<1000){
+                setMenuBtn(false);
+            }
+        })
+    },[])
     return (
 		<motion.div className="article-list" >
         	<StyledFeedsList style={menuBtn?{width:"260px"}:{width:"60px"}}>
@@ -46,6 +52,7 @@ overflow: hidden;
 max-width: 360px;
 --transition-time:300ms ;
 transition: var(--transition-time);
+background: var(--white);
 .nav .logo{
     display: flex;
     align-items: center;
@@ -100,4 +107,11 @@ transition: var(--transition-time);
 .source-list::-webkit-scrollbar{
     display: none;
 }
+@media screen and (max-width:1000px){
+    &{
+        position: absolute;
+        z-index: 1;
+    }
+}
+
 `

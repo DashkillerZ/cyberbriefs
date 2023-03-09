@@ -5,38 +5,17 @@ import {GlobalContext} from "../contexts/GlobalContext";
 
 
 const ArticleBody = ({feeds,articles}) => {
-    let {searchQuery} = useContext(GlobalContext);
+    let {searchQuery,separateDate   } = useContext(GlobalContext);
     const { feedname,articlename } = useParams();
     const feed = feeds.find((feed) => feed.feedName === feedname);
     let article;
-    if(searchQuery===""){
-        if(!articlename ){
-            article = articles[0]
-        }
-        else{
-            article = articles.find((article) => article?.feedName == feed?.feedName && article.title == articlename)
-        }
-    }else{
-        article = articles?.filter(article=>article.title.toLowerCase().includes(searchQuery?.toLowerCase()))[0];
+    if(!articlename ){
+        article = articles[0]
     }
-    function separateDate(dateStr) {
-        const date = new Date(dateStr);
-        const year = date.getUTCFullYear();
-        const month = date.getUTCMonth();
-        const day = date.getUTCDate();
-        const hour = date.getUTCHours();
-        const minutes = date.getUTCMinutes();
-        const months = ["January","February","March","April","May","June","July","August","September","Octomber","November","December"];
-        const hours = () => {
-            if (hour > 13) {
-                return hour - 12;
-            }
-            if (hour < 13) {
-                return hour;
-            }
-        };
-        return [year, months[month], day, hours(), minutes];
+    else{
+        article = articles.find((article) => article?.feedName == feed?.feedName && article.title == articlename)
     }
+
     return (
         <StyledArticleBody>
 			{/* <img src="./image.png" alt="" /> */}
@@ -109,5 +88,11 @@ p{
     display: flex;
     align-items: center;
     justify-content: center;
+}
+@media screen and (max-width:1000px) {
+    height: 50vh;
+    width: unset;
+    margin-left: 80px;
+    margin-top: 10px;
 }
 `

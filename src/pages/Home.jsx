@@ -38,13 +38,28 @@ const Home = () => {
 				console.error(error);
 			});
 	}, []); 
-    console.log(encodeURIComponent("Ransomware payments down 40% in 2022 – Week in security with Tony Anscombe"))
-
+    function separateDate(dateStr) {
+        const date = new Date(dateStr);
+        const year = date.getUTCFullYear();
+        const month = date.getUTCMonth();
+        const day = date.getUTCDate();
+        const hour = date.getUTCHours();
+        const minutes = date.getUTCMinutes();
+        const months = ["January","February","March","April","May","June","July","August","September","Octomber","November","December"];
+        const hours = () => {
+            if (hour > 13) {
+                return hour - 12;
+            }
+            if (hour < 13) {
+                return hour;
+            }
+        };
+        return [year, months[month], day, hours(), minutes];
+    }
     return (
 
         <StyledHome>
-        <GlobalContext.Provider value={{filteredArticles,searchQuery,handleSearch}} >
-
+        <GlobalContext.Provider value={{filteredArticles,separateDate,setSearchQuery,searchQuery,handleSearch}} >
             <Routes>
                 <Route path={`/`} element={<FeedsList feeds={feeds} articles={articles} />} />
                 <Route path={`/:feedname`} element={<FeedsList feeds={feeds} articles={articles} />} />
@@ -77,6 +92,7 @@ const StyledHome = styled.div`
 &{
     display: flex;
     width: 100%;
+    overflow: hidden;
 }    
 
 .home-grid{
@@ -86,5 +102,13 @@ const StyledHome = styled.div`
 .home-main{
     background-image: linear-gradient(130deg , var(--pallete-2),#ecf4f8);
     display: flex;
+}
+@media screen and (max-width:1000px){
+    .home-main{
+        display: grid;
+        overflow: auto;
+        /* overflow: hidden; */
+
+    }
 }
 `
