@@ -8,7 +8,7 @@ import { Link, useParams } from "react-router-dom";
 import {GlobalContext} from "../contexts/GlobalContext";
 
 const FeedsList = ({feeds,articles}) => {
-    const {feedsLoading} = useContext(GlobalContext);
+    const {feedsLoading,responsiveMenu} = useContext(GlobalContext);
 
     const{feedname}=useParams()
     let [menuBtn,setMenuBtn] = useState(true);
@@ -38,14 +38,14 @@ const FeedsList = ({feeds,articles}) => {
     }
     return (
 		<motion.div className="article-list">
-        	<StyledFeedsList style={{width:menuBtn?260:60}} >
+        	<StyledFeedsList style={{width:menuBtn?260:60,height:responsiveMenu?" var(--navbar-height)":"unset"}} >
 				<div className="nav">
 					<div className="logo">
 						<img src={logo} alt="" />
 						<img src={logoName} alt="" className="logoname" />
                         <div className="version">Alpha version 0.1</div>
 					</div>
-					<div className="source-menu">
+					<div className="source-menu" >
 						<div className="menu-btn" onClick={()=>{setMenuBtn(!menuBtn)}} >
 							<div></div>
 							<div></div>
@@ -57,7 +57,7 @@ const FeedsList = ({feeds,articles}) => {
 						<div className="numbers">{articlesLength}</div>
 					</div>
 				</div>
-				<div className="source-list">
+				<div className="source-list"  style={{display:responsiveMenu?"flex":"unset"}}>
                     <Link to="/allarticles" style={feedname==="allarticles" || !feedname? {background:"var(--secondary-lightest)"}:{}} className="all-articles-responsive">
                         <span className="material-symbols-outlined">emergency</span>
                     </Link>
@@ -199,20 +199,19 @@ background: var(--white);
     }
 }
 @media screen and (max-width:500px){
-    &{
-        position: absolute; 
-        top: calc( 2 * var(--navbar-height) );
-        min-width: 100% !important;
-        height: var(--navbar-height);
-    }
+    position: absolute; 
+    top: calc( 2 * var(--navbar-height) );
+    min-width: 100%;
+    height: var(--navbar-height);
+    z-index: 1;
     .nav{
         display: none;
     }
     .source-list{
-        display: flex;
+        /* display: flex; */
     }
     .all-articles-responsive{
-        padding: 0 8px;
+        padding: 0 16px;
         display: flex;
         align-items: center;
         height: var(--navbar-height);
@@ -221,10 +220,6 @@ background: var(--white);
     }
     .all-articles-responsive:hover{
         background: var(--secondary-lightest);
-    }
-
-    .all-articles-responsive .material-symbols-outlined{
-
     }
 }
 

@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Article from "./Article";
 import { useState,useContext, useEffect } from 'react';
 import {GlobalContext} from "../contexts/GlobalContext";
+import { motion } from "framer-motion";
 
 
 const ArticlesList = ({feeds,articles}) => {
@@ -21,6 +22,7 @@ const ArticlesList = ({feeds,articles}) => {
     }
 
     return (
+        <motion.div>
         <StyledArticlesList className="styledArticleList">  
             <div className="article-list">
 				<div className="source-name">
@@ -40,13 +42,20 @@ const ArticlesList = ({feeds,articles}) => {
                         <img src={logo} alt="" />
                     </div>:
                     filteredArticles?.map((data,index)=>(
-                        <Article data={data} index={index} isActive={data.title===articlename?true:false} key={data.id}/>
+                        <Article 
+                            data={data} 
+                            index={index} 
+                            isActive={data.title===articlename?true:false} 
+                            key={data.id}
+                        />
                     ))
 
                     }
                 </div>
 			</div>
         </StyledArticlesList>
+        </motion.div>
+
     );
 }
  
@@ -56,7 +65,6 @@ const StyledArticlesList = styled.div`
 height: calc(100vh - 60px);
 display: flex;
 justify-content: flex-start;
-
 .source-name .icon{
     width: 1.5rem;
     height: 1.5rem;

@@ -2,41 +2,28 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { useState,useContext, useEffect } from 'react';
 import {GlobalContext} from "../contexts/GlobalContext";
+import { motion } from "framer-motion";
 const Feed = ({data ,articles,isActive}) => {
-    let {mobile,setMobile} = useContext(GlobalContext);
+    let {mobile,responsiveMenu} = useContext(GlobalContext);
     let articlelink = articles?.find(article=>data?.feedName===article?.feedName);
-    useEffect(()=>{
-        function resize(){
-            if(window.innerWidth<500){
-                setMobile(true)
-            }
-            if(window.innerWidth>500){
-                setMobile(false)
-            }
-        }
-        window.addEventListener("load",()=>{
-            // resize();
-            if(window.innerWidth<500){
-                setMobile(false)
-            }
-            if(window.innerWidth>500){
-                setMobile(true)
-            }
-        })
-        window.addEventListener("resize",resize);
-    },[])
+
 
     return (
+        <motion.div
+            animate={{}}
+            Layout
+        >
         <StyledFeed>
-            <Link to={`/${data?.feedName}/${!mobile?(encodeURIComponent(articlelink?.title)):""}`} className={isActive?"list-el active":"list-el"} key={data?.id} onClick={() => {}}>
-				<div className="icon">
+            <Link to={`/${data?.feedName}/${!mobile?(encodeURIComponent(articlelink?.title)):""}`}  className={isActive?"list-el active":"list-el"} key={data?.id} onClick={() => {}}>
+                <div className="icon">
 					<img src={data?.feedIcon} alt="" />
 				</div>
-				<div className="source-title" title={data?.feedName}>{data?.feedName}</div>
-				<span className="material-symbols-outlined">expand_more</span>
-				<div className="border-right"></div>
+				<div className={!responsiveMenu?"source-title":"gone"} title={data?.feedName}>{data?.feedName}</div>
+				<span className={!responsiveMenu?"material-symbols-outlined":"gone"} >expand_more</span>
+				<div className={!responsiveMenu?"border-right":"gone"}></div>
 			</Link>
         </StyledFeed>
+        </motion.div>
     ); 
 }
 export default Feed;
@@ -44,7 +31,6 @@ export default Feed;
 const StyledFeed = styled.div`
 --transition-time:300ms ;
 --max-width: 300px;
-scroll-snap-type: y mandatory !important;
 .list-el{
     display: flex;
     align-items: center;
@@ -120,17 +106,14 @@ scroll-snap-type: y mandatory !important;
     transition: var(--transition-time);
 }
 @media screen and (max-width:500px){
-height: var(--navbar-height);
     .list-el{
-        width: min-content;
-        height: var(--navbar-height);
+        max-width: 100vw;
 
     }
-    .list-el .icon {
-        margin: 5px;
+    .gone{
+        display: none;
     }
-
-    .source-title{
+    /* .source-title{
         display: none;
     }
     .material-symbols-outlined{
@@ -138,6 +121,6 @@ height: var(--navbar-height);
     }
     .border-right{
         display: none;
-    }
+    } */
 }
 `

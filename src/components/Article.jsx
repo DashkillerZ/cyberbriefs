@@ -2,12 +2,17 @@ import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useContext } from 'react';
 import {GlobalContext} from "../contexts/GlobalContext";
+import { motion } from "framer-motion";
 
 const Article = ({data,isActive,index}) => {
     const { feedname } = useParams();
     let {separateDate} = useContext(GlobalContext);
 
     return (
+        <motion.div
+            animate={{ scale:[0.9, 1 ],opacity:[0.5, 1 ]}}
+        >
+
         <StyledArticle className="article">
 		    <Link to={`/${data.feedName}/${encodeURIComponent(data.title)}`} className={isActive?"list-el active":"list-el"}>
 		    	<div className="icon" style ={index%2==0?{background:"var(--pallete-4)"}:{background:"var(--pallete-5)"}}>
@@ -18,15 +23,19 @@ const Article = ({data,isActive,index}) => {
                     <div className="article-summery">{data.summary}</div>
 		    	</div>
 		    	<div>
-		    		<div className="article-date">{
-                        separateDate(data.publishedDate)[3]+" "+separateDate(data.publishedDate)[5]
-                    }</div>
+		    		<div className="article-date">
+                        {separateDate(data.publishedDate)[3]}
+                        &nbsp;
+                        {separateDate(data.publishedDate)[5]}
+                    </div>
 		    		<div className="favourite">
 		    			<span className="material-symbols-outlined">star</span>
 		    		</div>
 		    	</div>
 		    </Link>
         </StyledArticle>
+        </motion.div>
+
     );
 }
  

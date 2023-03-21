@@ -1,8 +1,9 @@
 import logoName from "../static/logoName.png";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useState,useContext } from 'react';
 import {GlobalContext} from "../contexts/GlobalContext";
+import { motion } from "framer-motion";
 
 
 const ArticleBody = ({feeds,articles}) => {
@@ -18,8 +19,9 @@ const ArticleBody = ({feeds,articles}) => {
     }
 
     return (
-       
+        
         <StyledArticleBody>
+        <motion.div>
             {
             articleLoading
             ?
@@ -28,6 +30,11 @@ const ArticleBody = ({feeds,articles}) => {
             </div>
             :
             <>
+            <div className="back">
+                <Link to={"/"+feedname}>
+                    <span class="material-symbols-outlined">arrow_back</span>
+                </Link>
+            </div>
 			<div className="published">
                 {article?.publishedDate &&
                 "Published: " +
@@ -37,11 +44,12 @@ const ArticleBody = ({feeds,articles}) => {
                   ", " +
                   separateDate(article.publishedDate)[0]}
             </div>
-			<div className="title">{article?.title}</div>
+			<Link target={"_blank"} to={article?.link} className="title">{article?.title}</Link>
 			<div className="summery">
 				<p>{article?.summary}</p>
 			</div>
             </>}
+        </motion.div>
         </StyledArticleBody>
     );
 }
@@ -53,7 +61,7 @@ const StyledArticleBody = styled.div`
 border-radius: 10px;
 margin: 1rem;
 margin-left: 0;
-padding: 1rem;
+padding-block: 1rem;
 background: var(--white);
 box-shadow: 0 0 1rem #d4d4d4;
 overflow-x: hidden;
@@ -79,7 +87,14 @@ height: calc(100vh - 2rem - 2rem - var(--navbar-height));
     margin-left: 1rem;
     font-size: 1.5rem;    
     font-weight: 600;
+    display: block;
+    text-decoration: none;
+    color: unset;
 }   
+.title:hover{
+    text-decoration: underline;
+
+}
 p{
     margin-left: 1rem;
     color: var(--secondary-dark);
@@ -90,7 +105,25 @@ p{
 &::-webkit-scrollbar{
     display: none;
 }
+.back{
+    display: none;
+    position: absolute;
+    right: 10px;
+    border-radius: 100%;
+    align-content: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    background: var(--secondary-lightest);
 
+}
+.back a{
+    display: block;
+    text-decoration: none;
+    height: min-content;
+    color: var(--pallete-4);
+    margin-top:2px;
+}
 .loading{
     position: absolute;
     inset: 0;
@@ -113,18 +146,33 @@ p{
     background-image: linear-gradient(90deg,transparent,#ffffffa1,transparent);
     animation: shimmer 2s infinite;
 }
+.summery{
+    margin-right: 0.5rem;
+}
 @keyframes shimmer {
     100% {
       transform: translateX(100%);
     }
 }
 @media screen and (max-width:500px) {
+.back{
+    display: flex;
+}
+.published{
+    margin-bottom: 1rem;    
+
+}
+.summery{
+    padding:  0 0 30px 0;
+}
+.summery p{
+    margin-top: 1rem;
+}
 box-shadow: none;
 border-radius: 0;
 margin: 0;
 margin-top: calc(50px  + 1rem - 6px);
 height: calc(100vh - 2rem - 2rem - var(--navbar-height));
 /* display: none; */
-padding: 0.5rem;
 }
 `

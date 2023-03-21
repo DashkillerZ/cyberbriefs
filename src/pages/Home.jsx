@@ -21,6 +21,8 @@ const Home = () => {
     const [articleLoading,setArticleLoading] = useState(true);
     const [searchQuery,setSearchQuery] = useState("");
     let [mobile,setMobile] = useState(true);
+    let [responsiveMenu,setResponsiveMenu] = useState(false);
+
     
     let [tickSpeed,setTickSpeed] = useState(false);
     useEffect(() => {
@@ -28,6 +30,21 @@ const Home = () => {
             setTickSpeed(!tickSpeed);
         },10000);
 	}, []);
+
+    useEffect(()=>{
+        function resize(){
+            if(window.innerWidth>=500){
+                setMobile(false)
+                setResponsiveMenu(false)
+            }
+            if(window.innerWidth<500){
+                setMobile(true)
+                setResponsiveMenu(true)
+            }
+        }
+        window.addEventListener("resize",resize);
+        resize();
+    },[])
 
     function handleSearch(e){
         setSearchQuery(e)
@@ -69,7 +86,9 @@ const Home = () => {
     return (
 
         <StyledHome>
-        <GlobalContext.Provider value={{articlesLoading,feedsLoading,articleLoading,mobile, setMobile,separateDate,setSearchQuery,searchQuery,handleSearch}} >
+        <GlobalContext.Provider 
+            value={{responsiveMenu,searchQuery,articlesLoading,feedsLoading,articleLoading,mobile,setMobile,separateDate,setSearchQuery,setResponsiveMenu,handleSearch}} 
+        >
             <Routes>
                 <Route path={`/`} element={<FeedsList feeds={feeds} articles={articles} />} />
                 <Route path={`/:feedname`} element={<FeedsList feeds={feeds} articles={articles} />} />
@@ -82,7 +101,7 @@ const Home = () => {
 						<img src={logoName} alt="" className="logoname" />
                         {/* <div className="version">Alpha version 0.1</div> */}
 					</div>
-                    <div className="menu-btn">
+                    <div className="menu-btn" onClick={()=>{setResponsiveMenu(!responsiveMenu)}}>
 							<div></div>
 							<div></div>
 							<div></div>
@@ -93,7 +112,7 @@ const Home = () => {
                     <Routes>
                         <Route path={`/`} element={<ArticlesList articles={articles} feeds={feeds} />} />
                         <Route path={`/:feedname`} element={<ArticlesList articles={articles} feeds={feeds} />} />
-                        {<Route path={`/:feedname/:articlename`} element={<ArticlesList articles={articles} feeds={feeds} />} /> }
+                        {!mobile && <Route path={`/:feedname/:articlename`} element={<ArticlesList articles={articles} feeds={feeds} />} /> }
                     </Routes>
 
                     <Routes>
