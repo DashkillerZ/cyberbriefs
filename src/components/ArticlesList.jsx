@@ -69,9 +69,9 @@ justify-content: flex-start;
     width: 1.5rem;
     height: 1.5rem;
     min-width: 1.5rem;
-    overflow: hidden;
+    /* overflow: hidden; */
     border-radius: 40px;
-    background: white;
+    background: var(--white);
     padding: 5px;
     margin: 0 0.5rem 0 0;
     border: 2px solid var(--secondary-lightest);
@@ -79,7 +79,7 @@ justify-content: flex-start;
 .source-name .icon img{
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     border-radius: 5px;
 }
 .source-name{

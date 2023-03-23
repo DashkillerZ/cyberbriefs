@@ -6,12 +6,10 @@ import { motion } from "framer-motion";
 const Feed = ({data ,articles,isActive}) => {
     let {mobile,responsiveMenu} = useContext(GlobalContext);
     let articlelink = articles?.find(article=>data?.feedName===article?.feedName);
-
+    
 
     return (
         <motion.div
-            animate={{}}
-            Layout
         >
         <StyledFeed>
             <Link to={`/${data?.feedName}/${!mobile?(encodeURIComponent(articlelink?.title)):""}`}  className={isActive?"list-el active":"list-el"} key={data?.id} onClick={() => {}}>
@@ -79,13 +77,12 @@ const StyledFeed = styled.div`
     width: 1.5rem ;
     height: 1.5rem;
     min-width: 1.5rem;
-    margin: 4px;
-    margin-left: 10px;
-    padding: 5px;
-    border: 2px solid var(--secondary-lightest);
     border-radius: 2rem;
     background: var(--white);
-    filter: saturate(0%);
+    padding: 5px;
+    margin: 4px 10px 4px 4px;
+    border: 2px solid var(--secondary-lightest);
+    filter: saturate(10%);
 }
 .list-el img{
     width: 100%;
@@ -109,6 +106,9 @@ const StyledFeed = styled.div`
     .list-el{
         max-width: 100vw;
 
+    }
+    .list-el .icon{
+        margin-left: 5px;
     }
     .gone{
         display: none;

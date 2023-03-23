@@ -32,7 +32,7 @@ const ArticleBody = ({feeds,articles}) => {
             <>
             <div className="back">
                 <Link to={"/"+feedname}>
-                    <span class="material-symbols-outlined">arrow_back</span>
+                    <span className="material-symbols-outlined">arrow_back</span>
                 </Link>
             </div>
 			<div className="published">

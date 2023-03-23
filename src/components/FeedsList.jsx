@@ -12,6 +12,7 @@ const FeedsList = ({feeds,articles}) => {
 
     const{feedname}=useParams()
     let [menuBtn,setMenuBtn] = useState(true);
+    let [moreFeeds,setMoreFeeds] = useState(false);
     useEffect(()=>{
         window.addEventListener("load",()=>{
             window.addEventListener("resize",()=>{
@@ -37,7 +38,7 @@ const FeedsList = ({feeds,articles}) => {
         articlesLength = articles.filter((article) => article.feedName === feed?.feedName).length;
     }
     return (
-		<motion.div className="article-list">
+		<motion.div className="article-list" >
         	<StyledFeedsList style={{width:menuBtn?260:60,height:responsiveMenu?" var(--navbar-height)":"unset"}} >
 				<div className="nav">
 					<div className="logo">
@@ -57,7 +58,10 @@ const FeedsList = ({feeds,articles}) => {
 						<div className="numbers">{articlesLength}</div>
 					</div>
 				</div>
-				<div className="source-list"  style={{display:responsiveMenu?"flex":"unset"}}>
+				<div 
+                    className={responsiveMenu?"source-list source-list-500":"source-list "}
+                    // style={{display:responsiveMenu?"flex":"grid"}}
+                >
                     <Link to="/allarticles" style={feedname==="allarticles" || !feedname? {background:"var(--secondary-lightest)"}:{}} className="all-articles-responsive">
                         <span className="material-symbols-outlined">emergency</span>
                     </Link>
@@ -67,12 +71,24 @@ const FeedsList = ({feeds,articles}) => {
                     <div className="loading">
                         <img src={logo} alt="" />
                     </div>
-                    :
-                    feeds.map((data)=>(
-						<Feed data={data} articles={articles} isActive={data.feedName===feedname?true:false} key={data.id} />
-                    ))
+                    :(
+                    moreFeeds?
+                    <>
+                    {feeds.map((data)=>(
+                        <Feed data={data} articles={articles} isActive={data.feedName===feedname?true:false} key={data.id} />
+                    ))}
+                    <div className="more-less-feeds less" onClick={()=>setMoreFeeds(false)}><span className="material-symbols-outlined">expand_less</span></div>
+                    </>
+                    :<>
+                    {feeds.map((data)=>(
+                        <Feed data={data} articles={articles} isActive={data.feedName===feedname?true:false} key={data.id} />
+                    )).slice(0,5)}
+                    <div className="more-less-feeds more" onClick={()=>setMoreFeeds(true)}><span className="material-symbols-outlined">expand_more</span></div>
+                    </>
+                    )
                     }
 				</div>
+                
         	</StyledFeedsList>
 		</motion.div>
     );
@@ -167,6 +183,19 @@ background: var(--white);
 .source-list::-webkit-scrollbar{
     display: none;
 }
+.more-less-feeds{
+    /* text-align: center; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    padding-block: 2px;
+    background: var(--pallete-3);
+
+}
+.more-less-feeds:hover{
+    background: var(--secondary-lightest);
+}
 .loading{
     display: flex;
     align-items: center;
@@ -208,7 +237,19 @@ background: var(--white);
         display: none;
     }
     .source-list{
-        /* display: flex; */
+        height: 50px;
+    }
+    
+    .source-list-500{
+        display: flex;
+    }
+    .more-less-feeds ,.more-less-feeds>span{
+        aspect-ratio: 1/1;
+        
+    }
+    .more-less-feeds>span{
+        transform: rotate(-90deg);
+
     }
     .all-articles-responsive{
         padding: 0 16px;

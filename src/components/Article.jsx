@@ -29,7 +29,11 @@ const Article = ({data,isActive,index}) => {
                         {separateDate(data.publishedDate)[5]}
                     </div>
 		    		<div className="favourite">
-		    			<span className="material-symbols-outlined">star</span>
+		    			{/* <span className="material-symbols-outlined">star</span> */}
+                        <svg width="20" height="19" viewBox="0 0 31 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M11 10.5C11 10.5 1.9 11.5 1.5 11.5L9 18.5L7 28.5L15.5 23L24 28.5L22.5 18.5L29 11.5L19.5 10.5L15.5 2L11 10.5Z" stroke="black"/>
+                        </svg>
+
 		    		</div>
 		    	</div>
 		    </Link>
@@ -127,9 +131,21 @@ const StyledArticle = styled.div`
 .list-el .favourite{
     color: var(--secondary-lighter);
     text-align: center;
+    position: relative;
 
 }
-    
+
+.list-el .favourite svg path{
+    stroke:var(--secondary-lighter);
+    stroke-width: 2px;
+    /* position: absolute; */
+}
+.list-el .favourite:hover svg path{
+    stroke:var(--pallete-5);
+    fill:#fbff003f;
+
+}
+
 @media screen and (max-width:500px) {
     .list-el>div:nth-child(2){
         width: 250px;
