@@ -5,7 +5,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow: hidden;
+  /* overflow: hidden; */
+  clip-path: polygon(0% 0% , 100% 0%,100% 100%,0% 100%);
 }
 
 code {
@@ -28,3 +29,14 @@ code {
   --pallete-5:#343031;
   --navbar-height:60px;
 }
+@media screen and (max-width:500px) {
+  body{
+    /* overflow-y: auto;   */
+  }
+  
+}
+/* a:focus{
+  outline: 2px dashed var(--secondary-lighter);
+  outline-offset: -2px;
+
+} */

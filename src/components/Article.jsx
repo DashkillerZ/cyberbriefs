@@ -1,21 +1,26 @@
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { useContext } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import {GlobalContext} from "../contexts/GlobalContext";
 import { motion } from "framer-motion";
 
 const Article = ({data,isActive,index}) => {
-    const { feedname } = useParams();
     let {separateDate} = useContext(GlobalContext);
-
+    let [starred,setStarred]=useState(false);
+    let articleRef = useRef();
+    useEffect(()=>{
+        if(isActive){
+            articleRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+    },[isActive])
     return (
         <motion.div
             animate={{ scale:[0.9, 1 ],opacity:[0.5, 1 ]}}
         >
 
         <StyledArticle className="article">
-		    <Link to={`/${data.feedName}/${encodeURIComponent(data.title)}`} className={isActive?"list-el active":"list-el"}>
-		    	<div className="icon" style ={index%2==0?{background:"var(--pallete-4)"}:{background:"var(--pallete-5)"}}>
+		    <Link to={`/${data.feedName}/${encodeURIComponent(data.title)}`} ref={articleRef} className={isActive?"list-el active":"list-el"}>
+		    	<div className="icon" style ={index%2===0?{background:"var(--pallete-4)"}:{background:"var(--pallete-5)"}}>
 		    		<span className="material-symbols-outlined">forum</span>
 		    	</div>
 		    	<div>
@@ -28,10 +33,10 @@ const Article = ({data,isActive,index}) => {
                         &nbsp;
                         {separateDate(data.publishedDate)[5]}
                     </div>
-		    		<div className="favourite">
+		    		<div className="favourite" onClick={()=>{setStarred(!starred)}}>
 		    			{/* <span className="material-symbols-outlined">star</span> */}
                         <svg width="20" height="19" viewBox="0 0 31 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M11 10.5C11 10.5 1.9 11.5 1.5 11.5L9 18.5L7 28.5L15.5 23L24 28.5L22.5 18.5L29 11.5L19.5 10.5L15.5 2L11 10.5Z" stroke="black"/>
+                            <path d="M11 10.5C11 10.5 1.9 11.5 1.5 11.5L9 18.5L7 28.5L15.5 23L24 28.5L22.5 18.5L29 11.5L19.5 10.5L15.5 2L11 10.5Z" fill={starred?"#fbff00":""} stroke="black"/>
                         </svg>
 
 		    		</div>
@@ -142,7 +147,7 @@ const StyledArticle = styled.div`
 }
 .list-el .favourite:hover svg path{
     stroke:var(--pallete-5);
-    fill:#fbff003f;
+    /* fill:#fbff003f; */
 
 }
 

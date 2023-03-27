@@ -1,20 +1,36 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { useState,useContext, useEffect } from 'react';
+import logo from "../static/logo.png";
+import { useContext, useEffect, useRef, useState } from 'react';
 import {GlobalContext} from "../contexts/GlobalContext";
 import { motion } from "framer-motion";
 const Feed = ({data ,articles,isActive}) => {
     let {mobile,responsiveMenu} = useContext(GlobalContext);
     let articlelink = articles?.find(article=>data?.feedName===article?.feedName);
-    
-
+    const [isValid, setIsValid] = useState(true);
+    let feedRef = useRef();
+    // useEffect(()=>{
+    //     if(isActive){
+    //         feedRef.current.scrollIntoView({ behavior: "smooth" });
+    //     }
+    // },[isActive])
     return (
         <motion.div
         >
         <StyledFeed>
-            <Link to={`/${data?.feedName}/${!mobile?(encodeURIComponent(articlelink?.title)):""}`}  className={isActive?"list-el active":"list-el"} key={data?.id} onClick={() => {}}>
+            <Link 
+                ref={feedRef}
+                to={`/${data?.feedName}/${!mobile?(encodeURIComponent(articlelink?.title)):""}`}  
+                className={isActive?"list-el active":"list-el"} key={data?.id} onClick={() => {}}
+            >
                 <div className="icon">
-					<img src={data?.feedIcon} alt="" />
+                    {
+                        isValid
+                        ?
+                        <img src={data?.feedIcon} onError={()=>setIsValid(false)} alt="" />
+                        :
+                        <img src={logo}  alt="" />
+                    }
 				</div>
 				<div className={!responsiveMenu?"source-title":"gone"} title={data?.feedName}>{data?.feedName}</div>
 				<span className={!responsiveMenu?"material-symbols-outlined":"gone"} >expand_more</span>
@@ -49,14 +65,14 @@ const StyledFeed = styled.div`
 }
 .list-el.active .icon{
     filter: saturate(100%);
+    border: 2px dashed var(--secondary-light);
+
 
 }
 .list-el.active .material-symbols-outlined{
     transform: rotate(-90deg);
 }
-.list-el:hover .border-right{
-    transform: translate(0);
-}
+
 .list-el:hover {
     background: var(--secondary-lightest);
 }
@@ -80,7 +96,7 @@ const StyledFeed = styled.div`
     border-radius: 2rem;
     background: var(--white);
     padding: 5px;
-    margin: 4px 10px 4px 4px;
+    margin: 4px 10px 4px 10px;
     border: 2px solid var(--secondary-lightest);
     filter: saturate(10%);
 }
@@ -105,10 +121,11 @@ const StyledFeed = styled.div`
 @media screen and (max-width:500px){
     .list-el{
         max-width: 100vw;
-
+        margin: 0;
+        height: var(--navbar-height);
     }
     .list-el .icon{
-        margin-left: 5px;
+        /* margin-left: 5px; */
     }
     .gone{
         display: none;

@@ -44,8 +44,8 @@ const FeedsList = ({feeds,articles}) => {
 					<div className="logo">
 						<img src={logo} alt="" />
 						<img src={logoName} alt="" className="logoname" />
-                        <div className="version">Alpha version 0.1</div>
 					</div>
+                    {/* <div className="tagline">the Latest in Cybersecurity News</div> */}
 					<div className="source-menu" >
 						<div className="menu-btn" onClick={()=>{setMenuBtn(!menuBtn)}} >
 							<div></div>
@@ -102,12 +102,21 @@ const StyledFeedsList = styled.div`
 overflow: hidden;
 max-width: 360px;
 width: 100%;
+height: 100vh;
 --transition-time:300ms ;
 transition: var(--transition-time) cubic-bezier(0.075, 0.82, 0.165, 1);
 background: var(--white);
 
 
-
+.tagline{
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    font-size: 0.7rem;
+    margin: 0 20px 15px 10px ;
+    text-transform: capitalize;
+    color:var(--secondary-light)
+}
 .version{
     z-index: 1;
     bottom: 10px;
@@ -135,7 +144,8 @@ background: var(--white);
     margin-right: 0.7rem;
 }
 .nav .logo .logoname{
-    height: 15px;
+    /* height: 70px; */
+    /* width: 100px; */
 }
 .source-menu{
     display: flex;
@@ -177,7 +187,7 @@ background: var(--white);
 
 .source-list{
     overflow-y: auto;
-    height:calc(100vh - 110px);
+    height:calc(100vh - 150px);
     position: relative;
 }
 .source-list::-webkit-scrollbar{
@@ -233,21 +243,30 @@ background: var(--white);
     min-width: 100%;
     height: var(--navbar-height);
     z-index: 1;
+    /* height: 100svh; */
+
     .nav{
         display: none;
     }
     .source-list{
-        height: 50px;
+        display: grid;
+        grid-template-rows: repeat(auto-fit,var(--navbar-height));
     }
-    
+     .logo .logoname{
+        width: 90px ;
+    }
     .source-list-500{
+
         display: flex;
     }
-    .more-less-feeds ,.more-less-feeds>span{
+
+    .more-less-feeds {
         aspect-ratio: 1/1;
+        height: var(--navbar-height);
         
     }
     .more-less-feeds>span{
+        aspect-ratio: 1/1;
         transform: rotate(-90deg);
 
     }

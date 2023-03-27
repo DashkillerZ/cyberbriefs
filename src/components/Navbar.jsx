@@ -20,7 +20,7 @@ const Navbar = ({articles}) => {
                         {articles?.filter(article=>article.title.toLowerCase().includes(searchQuery.toLowerCase()))
                         .map(data=>(
                         <div className="list-el" key={data.id}>
-                            <Link to={`/${data.feedName}/${data.title}`} onClick={()=>handleSearchClick()} >
+                            <Link to={`/${encodeURIComponent(data.feedName)}/${encodeURIComponent(data.title)}`} onClick={()=>handleSearchClick()} >
                                 <span>{data.title}</span>
                                 <div>{data.feedName}</div>
                             </Link>
@@ -43,6 +43,9 @@ const Navbar = ({articles}) => {
 						<div className="user-email">austin@example.com</div>
 					</div>
 				</div> */}
+				<div className="right">
+                    <span className="material-symbols-outlined">more_vert</span>
+				</div>
         </StyledNavbar>
     );
 }
@@ -55,6 +58,7 @@ const StyledNavbar = styled.div`
 background: var(--pallete-1);
 display: flex;  
 align-items: center;
+justify-content: space-between;
 width: 100%;
 height: var(--navbar-height);
 --padding-inline:20px;
@@ -129,7 +133,16 @@ height: var(--navbar-height);
     border-bottom: 1px solid var(--pallete-1);
     padding-bottom: 3px;
 }
-.right{
+.right .material-symbols-outlined{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 10px 0 5px;
+    font-size: 2rem;
+    background: var(--secondary-lightest);
+   
+}
+/* .right{
     display: flex;
     margin: 0 10px 0 auto;
     align-items: center;
@@ -159,7 +172,7 @@ height: var(--navbar-height);
     object-fit: cover;
     width: 100%;
     height: 100%;
-}
+} */
 @media screen and (max-width:1000px){
     /* width: 100vw; */
 

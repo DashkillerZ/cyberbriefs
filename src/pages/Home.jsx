@@ -133,7 +133,7 @@ const StyledHome = styled.div`
 &{
     display: flex;
     width: 100%;
-    overflow: hidden;
+    /* overflow: hidden; */
 }   
 .home-grid{
     width: 100%;
@@ -163,7 +163,7 @@ const StyledHome = styled.div`
     margin-right: 0.7rem;
 }
 .logo .logoname{
-    height: 15px;
+    width: 150px;
 }
 .menu-btn{
     width: 25px;

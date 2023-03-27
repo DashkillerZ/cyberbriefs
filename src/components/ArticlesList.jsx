@@ -2,7 +2,7 @@ import logo from "../static/logo.png";
 import {useParams } from "react-router-dom";
 import styled from "styled-components";
 import Article from "./Article";
-import { useState,useContext, useEffect } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import {GlobalContext} from "../contexts/GlobalContext";
 import { motion } from "framer-motion";
 
@@ -11,9 +11,9 @@ const ArticlesList = ({feeds,articles}) => {
     const { feedname,articlename } = useParams();
     const {articlesLoading} = useContext(GlobalContext);
     const feed = feeds.find(feed => feed.feedName === feedname);
+    const [isValid, setIsValid] = useState(true);
     let filteredArticles = [];
-    useEffect(()=>{
-    })
+    
     if(feedname==="allarticles" || !feedname){
         filteredArticles = articles
     }
@@ -30,7 +30,13 @@ const ArticlesList = ({feeds,articles}) => {
                     {
                         feedname==="allarticles"||!feedname?
                         <span className="material-symbols-outlined">emergency</span>:
-                        <img src={(feed? feed.feedIcon:feeds[0]?.feedIcon)} alt="" />
+                        (
+                            isValid
+                            ?
+                            <img src={(feed? feed.feedIcon:feeds[0]?.feedIcon)} onError={()=>setIsValid(false)} alt="" />
+                            :
+                            <img src={logo}  alt="" />
+                        )
                     }
 					</div>
 					<div >{feedname==="allarticles" ||!feedname?"All Articles":(feed? feed.feedName:feeds[0]?.feedName)}</div>
@@ -90,6 +96,7 @@ justify-content: flex-start;
     padding:0 10px;
     background: var(--pallete-3);
     max-width: 300px;
+    margin-bottom: 5px;
 }
 .source-name > div{
     white-space: nowrap;
@@ -118,7 +125,7 @@ justify-content: flex-start;
     overflow-y: auto;
     /* overflow: scroll; */
     width: 100%;
-    height:calc( 100% - 2rem );
+    height:calc( 100% - 3rem );
     position: relative;
 }
 .article-list .list::-webkit-scrollbar{
@@ -187,10 +194,13 @@ justify-content: flex-start;
         min-width: 100%;
         max-width: unset;
         padding: 0;
+        /* height: calc( 100vh - 3 * var(--navbar-height)); */
 
     }
+   
     .article-list .list{
         max-height: calc(100vh - 2rem - 60px - 50px);
+
     }
 
 
